@@ -1,5 +1,9 @@
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +16,7 @@ public class NormalHangmanTest {
 
 	@Before
 	public void setUp() throws Exception {
-		hm = new NormalHangMan(WORD, 8, "");
+		hm = new NormalHangMan(WORD, 8, new HashSet<Character>());
 	}
 	
 	@Test
@@ -33,7 +37,7 @@ public class NormalHangmanTest {
 		assertEquals(8, hm.numGuessesRemaining());
 		assertEquals(7, hm.numLettersRemaining()); // because the word has 7 distinct letters
 		assertEquals("_ _ _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("", hm.lettersGuessed());
+		assertTrue(setContainsAllChars(hm.lettersGuessed, ""));
 		assertFalse(hm.gameOver());
 	}
 
@@ -46,7 +50,7 @@ public class NormalHangmanTest {
 		assertEquals(8, hm.numGuessesRemaining());
 		assertEquals(6, hm.numLettersRemaining());
 		assertEquals("S _ _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("S", hm.lettersGuessed());
+		assertTrue(setContainsAllChars(hm.lettersGuessed, "S"));
 		assertFalse(hm.gameOver());
 	}
 	
@@ -59,7 +63,7 @@ public class NormalHangmanTest {
 		assertEquals(8, hm.numGuessesRemaining());
 		assertEquals(6, hm.numLettersRemaining());
 		assertEquals("_ _ O _ _ _ _ O _ ", hm.displayGameState());
-		assertEquals("O", hm.lettersGuessed());
+		assertTrue(setContainsAllChars(hm.lettersGuessed, "O"));
 		assertFalse(hm.gameOver());
 	}
 
@@ -74,7 +78,7 @@ public class NormalHangmanTest {
 		assertEquals(8, hm.numGuessesRemaining());
 		assertEquals(5, hm.numLettersRemaining());
 		assertEquals("S P _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("SP", hm.lettersGuessed());
+		assertTrue(setContainsAllChars(hm.lettersGuessed, "SP"));
 		assertFalse(hm.gameOver());
 	}
 	
@@ -87,7 +91,7 @@ public class NormalHangmanTest {
 		assertEquals(7, hm.numGuessesRemaining());
 		assertEquals(7, hm.numLettersRemaining());
 		assertEquals("_ _ _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("K", hm.lettersGuessed());
+		assertTrue(setContainsAllChars(hm.lettersGuessed, "K"));
 		assertFalse(hm.gameOver());
 	}
 	
@@ -102,7 +106,7 @@ public class NormalHangmanTest {
 		assertEquals(6, hm.numGuessesRemaining());
 		assertEquals(7, hm.numLettersRemaining());
 		assertEquals("_ _ _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("KT", hm.lettersGuessed());
+		assertTrue(setContainsAllChars(hm.lettersGuessed, "KT"));
 		assertFalse(hm.gameOver());
 	}
 	
@@ -121,7 +125,11 @@ public class NormalHangmanTest {
 		assertEquals(6, hm.numGuessesRemaining());
 		assertEquals(5, hm.numLettersRemaining());
 		assertEquals("S P _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("STPK", hm.lettersGuessed());
+		assertTrue(hm.lettersGuessed().size() == 4);
+		assertTrue(hm.lettersGuessed().contains('S'));
+		assertTrue(hm.lettersGuessed().contains('T'));
+		assertTrue(hm.lettersGuessed().contains('P'));
+		assertTrue(hm.lettersGuessed().contains('K'));		
 		assertFalse(hm.gameOver());
 	}
 	
@@ -131,7 +139,7 @@ public class NormalHangmanTest {
 		assertFalse(correct);
 		assertEquals(8, hm.numGuessesRemaining());
 		assertEquals("_ _ _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("", hm.lettersGuessed());
+		assertTrue(setContainsAllChars(hm.lettersGuessed, ""));
 		assertFalse(hm.gameOver());
 	}
 
@@ -144,7 +152,7 @@ public class NormalHangmanTest {
 		
 		assertEquals(8, hm.numGuessesRemaining());
 		assertEquals("S _ _ _ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("S", hm.lettersGuessed());
+		assertTrue(setContainsAllChars(hm.lettersGuessed, "S"));
 		assertFalse(hm.gameOver());
 	}
 
@@ -179,5 +187,13 @@ public class NormalHangmanTest {
 
 		assertTrue(hm.gameOver());
 		assertFalse(hm.isWin());
+	}
+	
+	private boolean setContainsAllChars(HashSet<Character> set, String s) {
+		HashSet<Character> candidateSet = new HashSet<Character>();
+		for (int i = 0; i < s.length(); i++) {
+			candidateSet.add(s.charAt(i));
+		}
+		return set.equals(candidateSet);
 	}
 }

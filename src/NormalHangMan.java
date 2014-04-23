@@ -8,17 +8,8 @@
  * <p>This class can then be used by a user interface to administer a regular game of Hangman.</p>
  */
 import java.util.*;
-public class NormalHangMan implements HangmanGame
+public class NormalHangMan extends Hangman
 {
-    
-
-	private String originSecretWord = "";//To store the secret word
-    private int guessesRemaining;//to store the number of guess for the user
-    private int numLettersLeft;//to store the number of the letters in the secret word has not been guessed correctly
-    private String currentState = "";//store the current guessing situation
-    private String history = "";//store the letter user has tried
-    private char guess;//the letter the user guess right now
-
     /**
      * Constructor sets up the game to be played with a word and some number of
      * guesses.  The class should have private variables that keep track of:
@@ -29,75 +20,38 @@ public class NormalHangMan implements HangmanGame
      * @param secretWord the word that the player is trying to guess
      * @param numGuesses the number of guesses allowed
      */
-    public NormalHangMan(String secretWord, int numGuesses, String LetterHistory){
-        originSecretWord = secretWord;
-        guessesRemaining = numGuesses;
-        numLettersLeft = secretWord.length();
+    public NormalHangMan(String secretWord, int numGuesses, HashSet<Character> letterHistory){
+    	this.secretWord = secretWord;
+    	this.numGuessesRemaining = numGuesses;
+    	this.numLettersRemaining = secretWord.length();
+    	this.currentState = new StringBuilder();
         for(int i = 0; i < secretWord.length(); i++)
         {
-            currentState += "_ ";
+            this.currentState.append("_ ");
             for(int j = i; j > 0; j--)
             {
                 if(secretWord.charAt(i) == secretWord.charAt(j-1))
                 {
-                    numLettersLeft--;//If the letter appears many times in the secret word, it will be counted just once.
+                    numLettersRemaining--;//If the letter appears many times in the secret word, it will be counted just once.
                     break;
                 }
             }
         }
-        history = LetterHistory;
-    }   
-
-    public String getSecretWord()
-    {
-        return originSecretWord;
+        this.lettersGuessed = letterHistory;
     }
-    public int numGuessesRemaining()
-    {
-        return guessesRemaining;
-    }
-    public int numLettersRemaining()
-    {
-        return numLettersLeft;
-    }
-    public boolean isWin()
-    {
-        if (guessesRemaining == 0)
-            return false;//if the user has no chance to guess again, it means the user loses.
-        else
-            return true;
-    }
-    public boolean gameOver()
-    {
-        if (guessesRemaining == 0 || numLettersLeft == 0)
-            return true;
-        else
-            return false;
-    }
-    public String lettersGuessed()
-    {
-        return history;
-    }
-    public String displayGameState()
-    {
-        return currentState;
-    }
+    
     public boolean makeGuess(char ch)
     {
     	if (Character.isLetter(ch) == false) return false;
         boolean tempB = updateState(ch);
-        guess = ch;
-        if (!alreadyGuessed(ch))
-        {
-            history = history + guess;
+        char guess = ch;
+        if (!super.isRepeatInput(ch)) {
+            lettersGuessed.add(guess);
 
-            if (tempB)
-            {
-                numLettersLeft--;
-            }
-            else
-            {
-                guessesRemaining--;
+            if (tempB) {
+                numLettersRemaining--;
+            } else {
+                numGuessesRemaining--;
             }
             return tempB;
         }
@@ -106,14 +60,17 @@ public class NormalHangMan implements HangmanGame
     
     // this should be private but then how do I test it??
     public boolean updateState(char ch) {
-        for (int i = 0; i < originSecretWord.length(); i++) {
-            if (originSecretWord.charAt(i) == ch) { //if the user guess right, adjust the current state.
-                String temp = "";
-                for (int j = 0; j < originSecretWord.length(); j++) {
-                    if (originSecretWord.charAt(j) == ch)
-                        temp = temp + ch + " ";
-                    else
-                        temp = temp + currentState.charAt(2*j) + currentState.charAt(2*j+1);              
+        for (int i = 0; i < secretWord.length(); i++) {
+            if (secretWord.charAt(i) == ch) { //if the user guess right, adjust the current state.
+            	StringBuilder temp = new StringBuilder();
+                for (int j = 0; j < secretWord.length(); j++) {
+                    if (secretWord.charAt(j) == ch) {
+                    	temp.append(ch);
+                    	temp.append(' ');
+                    } else {
+                    	temp.append(currentState.charAt(2*j));
+                    	temp.append(currentState.charAt(2*j + 1));
+                    }
                 }
                 currentState = temp;
                 return true;
@@ -121,16 +78,4 @@ public class NormalHangMan implements HangmanGame
         }
         return false;
     }
-    
-    public boolean alreadyGuessed(char c)
-    {
-    	for (int i = 0; i < history.length(); i++) {
-    		if (history.charAt(i) == c) return true;
-    	}
-    	return false;
-    }
-    
-   
-}
-    
-       
+}      

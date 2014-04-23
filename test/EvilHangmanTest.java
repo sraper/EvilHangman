@@ -1,6 +1,8 @@
 
 import static org.junit.Assert.*;
 
+import java.util.HashSet;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,7 +23,7 @@ public class EvilHangmanTest {
 		assertEquals("", hm.getSecretWord()); // unknown at first
 		assertEquals(8, hm.numGuessesRemaining());
 		assertEquals("_ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("", hm.lettersGuessed());
+		assertTrue(setContainsAllChars(hm.lettersGuessed, ""));
 		assertFalse(hm.gameOver());
 	}
 
@@ -33,7 +35,7 @@ public class EvilHangmanTest {
 
 		assertEquals(7, hm.numGuessesRemaining());
 		assertEquals("_ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("S", hm.lettersGuessed());
+		assertTrue(setContainsAllChars(hm.lettersGuessed, "S"));
 		assertFalse(hm.gameOver());
 	}
 	
@@ -46,7 +48,7 @@ public class EvilHangmanTest {
 
 		assertEquals(6, hm.numGuessesRemaining());
 		assertEquals("_ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("SP", hm.lettersGuessed());
+		assertTrue(setContainsAllChars(hm.lettersGuessed, "SP"));
 		assertFalse(hm.gameOver());
 	}
 	
@@ -56,7 +58,7 @@ public class EvilHangmanTest {
 		assertFalse(correct);
 		assertEquals(8, hm.numGuessesRemaining());
 		assertEquals("_ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("", hm.lettersGuessed());
+		assertTrue(setContainsAllChars(hm.lettersGuessed, ""));
 		assertFalse(hm.gameOver());
 	}
 
@@ -69,7 +71,7 @@ public class EvilHangmanTest {
 		
 		assertEquals(7, hm.numGuessesRemaining());
 		assertEquals("_ _ _ _ _ _ ", hm.displayGameState());
-		assertEquals("A", hm.lettersGuessed());
+		assertTrue(setContainsAllChars(hm.lettersGuessed, "A"));
 		assertFalse(hm.gameOver());
 	}
 	
@@ -77,9 +79,11 @@ public class EvilHangmanTest {
 	public void testSecretWord() {
 		// after one guess, the secret word changes 
 		hm.makeGuess('A');
+		System.out.println("-------" + hm.getSecretWord());
 		assertEquals("BEBOPS", hm.getSecretWord()); // don't ask how I know that
 		// after another guess, it changes again! 
 		hm.makeGuess('B');
+		System.out.println("------------" + hm.getSecretWord());
 		assertEquals("CEDERS", hm.getSecretWord()); // don't ask how I know that
 	}
 
@@ -131,5 +135,13 @@ public class EvilHangmanTest {
 
 		assertTrue(hm.gameOver());
 		assertFalse(hm.isWin());
+	}
+
+	private boolean setContainsAllChars(HashSet<Character> set, String s) {
+		HashSet<Character> candidateSet = new HashSet<Character>();
+		for (int i = 0; i < s.length(); i++) {
+			candidateSet.add(s.charAt(i));
+		}
+		return set.equals(candidateSet);
 	}
 }

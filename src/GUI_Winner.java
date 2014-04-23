@@ -1,10 +1,5 @@
 import javax.swing.*;
-
 import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-
-import javax.sound.sampled.*;
 
 public class GUI_Winner extends GUI_EndScreen {    
     public GUI_Winner(String answer,JFrame frame) {
@@ -35,5 +30,6 @@ public class GUI_Winner extends GUI_EndScreen {
 	    mainFrame.add(answerLabel);
 	    mainFrame.add(secretWordLabel);
 	    mainFrame.add(gameResultLabel);
+	    super.addReturnBtn();
 	}
 }

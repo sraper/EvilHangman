@@ -1,7 +1,15 @@
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashSet;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class GUI_PlayGame implements ActionListener
 {
@@ -9,7 +17,7 @@ public class GUI_PlayGame implements ActionListener
     private JLabel label1;
     private JLabel label2;
     private JLabel label3;
-    private HangmanGame game;
+    private Hangman game;
     private char inputLetter;
     private boolean isEvil = true;
     private JLabel result;
@@ -101,7 +109,7 @@ public class GUI_PlayGame implements ActionListener
                 result.setText("Yes!");
                 String secretString = game.getSecretWord();
                 int guessesRemaining = game.numGuessesRemaining();
-                String letterHistory = game.lettersGuessed();
+                HashSet<Character> letterHistory = game.lettersGuessed();
                 game = new NormalHangMan(secretString, guessesRemaining,letterHistory);//turn the evil to regular hangman
                 isEvil = false;
                 game.makeGuess(nextLetter);//re-value the user guess when turn to the regular hangman for the first time

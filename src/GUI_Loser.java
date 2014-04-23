@@ -1,12 +1,5 @@
 import javax.swing.*;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.Set;
-
-import javax.sound.sampled.*;
-
 public class GUI_Loser extends GUI_EndScreen {
 
 	public GUI_Loser(String answer, JFrame frame) {
@@ -21,6 +14,7 @@ public class GUI_Loser extends GUI_EndScreen {
 	    
 	    mainFrame.add(secretWordLabel);
 	    mainFrame.add(gameResultLabel);
+	    super.addReturnBtn();
 	    mainFrame.add(loserPic);
 	}	
 }

@@ -1,3 +1,5 @@
+import java.util.HashSet;
+
 public interface HangmanGame
 {
 
@@ -57,5 +59,5 @@ public interface HangmanGame
      * Duplicates should not be added.
      * @return a String showing which letters have already been guessed.
      */
-    public String lettersGuessed();
+    public HashSet<Character> lettersGuessed();
 }
