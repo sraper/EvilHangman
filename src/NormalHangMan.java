@@ -85,33 +85,8 @@ public class NormalHangMan implements HangmanGame
     public boolean makeGuess(char ch)
     {
     	if (Character.isLetter(ch) == false) return false;
-        boolean tempB = true;
+        boolean tempB = updateState(ch);
         guess = ch;
-        for (int i = 0; i < originSecretWord.length(); i++)
-        {
-            if (originSecretWord.charAt(i) == ch)//if the user guess right, adjust the current state.
-            {
-                String temp = "";
-                for (int j = 0; j < originSecretWord.length(); j++)
-                {
-                    if (originSecretWord.charAt(j) == ch)
-                    {
-                        temp = temp + ch + " ";
-                    }
-                    else
-                    {
-                        temp = temp + currentState.charAt(2*j) + currentState.charAt(2*j+1);              
-                    }
-                }
-                currentState = temp;
-                tempB = true;
-                break;
-            }
-            else
-            {
-                tempB = false;
-            }
-        }
         if (!alreadyGuessed(ch))
         {
             history = history + guess;
@@ -127,6 +102,24 @@ public class NormalHangMan implements HangmanGame
             return tempB;
         }
         else return false;
+    }
+    
+    // this should be private but then how do I test it??
+    public boolean updateState(char ch) {
+        for (int i = 0; i < originSecretWord.length(); i++) {
+            if (originSecretWord.charAt(i) == ch) { //if the user guess right, adjust the current state.
+                String temp = "";
+                for (int j = 0; j < originSecretWord.length(); j++) {
+                    if (originSecretWord.charAt(j) == ch)
+                        temp = temp + ch + " ";
+                    else
+                        temp = temp + currentState.charAt(2*j) + currentState.charAt(2*j+1);              
+                }
+                currentState = temp;
+                return true;
+            }
+        }
+        return false;
     }
     
     public boolean alreadyGuessed(char c)

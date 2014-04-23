@@ -16,6 +16,17 @@ public class NormalHangmanTest {
 	}
 	
 	@Test
+	public void testGoodUpdateState() {
+		boolean correct = hm.updateState('S');
+		assertTrue(correct);
+	}
+	
+	@Test public void testBadUpdateState() {
+		boolean correct = hm.updateState('Q');
+		assertFalse(correct);
+	}
+	
+	@Test
 	public void testInitialValues() {
 		// call the constructor and see that the initial values are correct
 		assertEquals(WORD, hm.getSecretWord());
